@@ -1,0 +1,41 @@
+{
+  "name": "@xslet/window",
+  "version": "0.1.0",
+  "description": "Gets window informations and provide operations related to window.",
+  "main": "src/defineWindow.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xslet/window.git"
+  },
+  "keywords": [
+    "web",
+    "browser",
+    "window"
+  ],
+  "author": "Takayuki Sato",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xslet/window/issues"
+  },
+  "homepage": "https://github.com/xslet/window#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "del": "^2.2.2",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-eslint": "^3.0.1",
+    "gulp-fun-style": "^0.3.2",
+    "gulp-jsdoc3": "^1.0.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-replace": "^0.5.4",
+    "gulp-sourcemaps": "^2.2.0",
+    "gulp-spawn-mocha": "^3.1.0",
+    "gulp-uglify": "^2.0.0",
+    "istanbul": "^0.4.5",
+    "jsdom": "^9.8.3",
+    "mocha": "^3.1.2"
+  }
+}

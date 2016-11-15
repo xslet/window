@@ -1,0 +1,16 @@
+/*!
+ * Copyright (C) 2016 xslet project.
+ * This software is released under the MIT license.
+ */
+
+/**
+ * Is the top namespace of all xslet modules.
+ *
+ * @namespace xslet
+ * @global
+ */
+;xslet = (typeof xslet === 'undefined') ? {} : xslet;
+
+(function(){
+  'use strict';
+  defineWindow(xslet, window);

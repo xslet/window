@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>@xslet/platform Index</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.spacelab.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">@xslet/platform</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="xslet.html">xslet</a></li><li><a href="xslet.window.html">xslet.window</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><h1><a href="https://github.com/xslet/window/">@xslet/window</a> <a href="https://xslet.github.io/window/"><img src="http://img.shields.io/badge/HP-github.io-ffbbbb.svg" alt="Github.io"></a> <a href="https://www.npmjs.org/package/@xslet/window/"><img src="http://img.shields.io/badge/npm-v0.1.0-blue.svg" alt="NPM version"></a> <a href="https://opensource.org/licenses/MIT"><img src="http://img.shields.io/badge/license-MIT-green.svg" alt="MIT License"></a></h1><p>Gets window informations of the Web browser.</p>
+<h2>Build</h2><p>Build this module:</p>
+<pre class="prettyprint source lang-sh"><code>$ gulp build</code></pre><h2>Usage</h2><p>Load this module in a browser:</p>
+<pre class="prettyprint source lang-js"><code>&lt;script src=&quot;xslet.window.min.js&quot;>&lt;/script></code></pre><p>Use <code>xslet.window.unitOfSize</code>:</p>
+<pre class="prettyprint source lang-js"><code>xslet.window.unitOfSize = 'rem'
+document.getElementById('id1').style.width = 10 + xslet.window.unitOfSize // = '10rem'</code></pre><p>Use <code>xslet.window.rootFontSize</code>:</p>
+<pre class="prettyprint source lang-js"><code>xslet.window.rootFontSize = '3.51mm'
+xslet.window.rootFontSize // => about 13 [px]
+
+xslet.window.rootFontSize = 13  // = 13 [px]
+document.getElementById('id2').style.fontSize = '2rem' // The element's font size is 26px</code></pre><p>Use <code>xslet.window.convertUnit</code>:</p>
+<pre class="prettyprint source lang-js"><code>xslet.window.rootFontSize = 13
+xslet.window.convertUnit(2, 'rem', 'px') // => 26px</code></pre><h2>APIs</h2><h4><u>xslet.window.unitOfSize</u></h4><p>The unit which used in xslet modules.
+This value allowed are <code>'px'</code>, <code>'mm'</code> and <code>'rem'</code> and can be set only once.</p>
+<p>Type: string</p>
+<h4><u>xslet.window.rootFontSize</u></h4><p>The font size which is assigned to the HTML element.
+This value is a number and the unit of this property is <code>'px'</code>, but can be set in unit either <code>'px'</code> or <code>'mm'</code> with a string like <code>'10px'</code> or <code>'2mm'</code>.</p>
+<p>Type: number</p>
+<h4><u>xslet.window.convertUnit(value, fromUnit, toUnit)</u></h4><p>Converts <code>value</code> in <code>fromUnit</code> to new value in <code>toUnit</code>.
+The units allowed are either <code>'px'</code>, <code>'mm'</code> and <code>'rem'</code>. </p>
+<p><strong>Parameter:</strong></p>
+<ul>
+<li>value {number} : A value to be converted.</li>
+<li>fromUnit {string} : The unit of <code>value</code>.</li>
+<li>toUnit {string} : The unit of value after converted.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>{number} : The value after converted.</li>
+</ul>
+<h2>License</h2><p>Copyright (C) 2016 Takayuki Sato</p>
+<p>This program is free software under <a href="https://opensource.org/licenses/MIT">MIT</a> License.
+See the file LICENSE in this distribution for more details.</p></article>
+    </section>
+
+
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	
+		on 2016/11/19 13:39:57
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
