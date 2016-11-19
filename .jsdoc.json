@@ -17,7 +17,7 @@
     "default": {
       "outputSourceFiles": true
     },
-    "systemName": "@xslet/platform",
+    "systemName": "@xslet/window",
     "path": "ink-docstrap",
     "theme": "spacelab",
     "navType": "vertical",
