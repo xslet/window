@@ -1,7 +1,7 @@
 [@xslet/window][repo-url] [![Github.io][io-image]][io-url] [![NPM version][npm-image]][npm-url] [![MIT License][mit-image]][mit-url]
 =============
 
-Gets window informations of the Web browser.
+Gets window informations and provide operations related to window.
 
 Build
 -----
