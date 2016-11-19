@@ -30,7 +30,7 @@ function getFontSize() {
   if (unit === 'px') {
     return fontSize;
   } else if (unit === 'mm') {
-    return Math.floor(num * MM_TO_PX) + 'px';
+    return (num * MM_TO_PX) + 'px';
   } else if (unit === 'rem') {
     num = REM_TO_PX * num;
     if (tag.tagName.toLowerCase() === 'html') {

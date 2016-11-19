@@ -77,6 +77,11 @@ The units allowed are either `'px'`, `'mm'` and `'rem'`.
 
 * {number} : The value after converted.
 
+Test on browsers
+----------------
+
+Open this page: [test/web/index.html](test/web/index.html).
+
 License
 -------
 

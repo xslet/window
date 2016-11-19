@@ -13,7 +13,7 @@ function defineUnitOfSize(nsWindow) {
   var unitOfSize;
 
   function getUnitOfSize() {
-    return unitOfSize || 'px';
+    return unitOfSize || (unitOfSize = 'px');
   }
 
   function setUnitOfSize(unit) {

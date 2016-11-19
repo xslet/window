@@ -12,10 +12,15 @@
  */
 function getPxPerMm(window) {
   var divTag = window.document.createElement('div');
-  divTag.style.fontSize = '10000mm';
+  divTag.style.fontSize = '100mm';
+  divTag.style.position = 'absolute';
+  divTag.style.visibility = 'hidden';
+  window.document.body.appendChild(divTag);
+
   var computedStyle = window.getComputedStyle(divTag);
   var fontSizePx = computedStyle.fontSize;
-  return Number(fontSizePx.slice(0, - 'px'.length)) / 10000; 
+  divTag.parentNode.removeChild(divTag);
+  return Number(fontSizePx.slice(0, -'px'.length)) / 100;
 }
 
 /**
@@ -28,16 +33,18 @@ function getPxPerMm(window) {
  * @param window {Window} - The window object of DOM.
  */
 function defineConvertUnit(nsWindow, window) {
-  var pxPerMm = getPxPerMm(window);;
+  var pxPerMm;
 
   function convertUnit(value, fromUnit, toUnit) {
+    pxPerMm = pxPerMm || getPxPerMm(window);
+    var pxPerRem = nsWindow.rootFontSize;
+
     if (fromUnit === 'px') {
       if (toUnit === 'mm') {
         return value / pxPerMm;
       }
 
       if (toUnit === 'rem') {
-        var pxPerRem = nsWindow.rootFontSize;
         return value / pxPerRem;
       }
 
@@ -47,18 +54,15 @@ function defineConvertUnit(nsWindow, window) {
       }
 
       if (toUnit === 'rem') {
-        var pxPerRem = nsWindow.rootFontSize;
         return (value * pxPerMm) / pxPerRem;
       }
 
-    } else if (fromUnit == 'rem') {
+    } else if (fromUnit === 'rem') {
       if (toUnit === 'px') {
-        var pxPerRem = nsWindow.rootFontSize;
         return value * pxPerRem;
       }
 
       if (toUnit === 'mm') {
-        var pxPerRem = nsWindow.rootFontSize;
         return (value * pxPerRem) / pxPerMm;
       }
     }

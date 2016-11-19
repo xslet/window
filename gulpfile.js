@@ -16,6 +16,7 @@ var filesForWeb = [
   'res/header.forweb',
   'src/lib/defineUnitOfSize.js',
   'src/lib/defineRootFontSize.js',
+  'src/lib/defineConvertUnit.js',
   'src/defineWindow.js',
   'res/footer.forweb',
 ]
@@ -64,10 +65,11 @@ fun.minify = () =>
       .pipe(gulp.dest(path.dirname(minifile)))
 
 fun.lint = () =>
-  gulp.src(destfile)
+  gulp.src(srcfiles)
       .pipe(plumber())
       .pipe(eslint())
       .pipe(eslint.format())
+fun.lint.description = 'Lint js source files.'
 
 fun.makedoc = [ 'jsdoc', 'copyDistToDocs', 'copyTestToDocs' ]
 

@@ -43,6 +43,5 @@ function defineWindow(xslet, window) {
    * @memberof xslet.window
    * @method xslet.window.convertUnit
    */
-  defineConvertedUnit(xslet.window, window);
+  defineConvertUnit(xslet.window, window);
 }
-
