@@ -4,7 +4,8 @@
   "description": "Gets window informations and provide operations related to window.",
   "main": "src/defineWindow.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "coveralls": "istanbul cover _mocha test/node/**/*.test.js --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   "homepage": "https://github.com/xslet/window#readme",
   "devDependencies": {
     "chai": "^3.5.0",
+    "coveralls": "^2.11.15",
     "del": "^2.2.2",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-concat": "^2.6.0",
