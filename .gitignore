@@ -6,6 +6,9 @@ npm-debug.log*
 # Coverage directory used by tools like istanbul
 coverage
 
+# Coverall setting file for local. This file must not make public.
+.coveralls.yml
+
 # Dependency directories
 node_modules
 

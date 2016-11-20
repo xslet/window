@@ -1,4 +1,4 @@
-[@xslet/window][repo-url] [![Github.io][io-image]][io-url] [![NPM version][npm-image]][npm-url] [![MIT License][mit-image]][mit-url]
+[@xslet/window][repo-url] [![Github.io][io-image]][io-url] [![NPM version][npm-image]][npm-url] [![MIT License][mit-image]][mit-url] [![Coverage Status][coverage-image]][coverage-url]
 =============
 
 Gets window informations and provide operations related to window.
@@ -77,10 +77,10 @@ The units allowed are either `'px'`, `'mm'` and `'rem'`.
 
 * {number} : The value after converted.
 
-Test on browsers
-----------------
+Behavior checks on browsers
+---------------------------
 
-Open this page: [test/web/index.html](test/web/index.html).
+Show this page: [test/web/index.html](test/web/index.html).
 
 License
 -------
@@ -90,10 +90,12 @@ Copyright (C) 2016 Takayuki Sato
 This program is free software under [MIT][mit-url] License.
 See the file LICENSE in this distribution for more details.
 
+[repo-url]: https://github.com/xslet/window/
+[io-image]: http://img.shields.io/badge/HP-github.io-ffbbbb.svg
+[io-url]: https://xslet.github.io/window/
 [npm-image]: http://img.shields.io/badge/npm-v0.1.1-blue.svg
 [npm-url]: https://www.npmjs.org/package/@xslet/window/
 [mit-image]: http://img.shields.io/badge/license-MIT-green.svg
 [mit-url]: https://opensource.org/licenses/MIT
-[io-image]: http://img.shields.io/badge/HP-github.io-ffbbbb.svg
-[io-url]: https://xslet.github.io/window/
-[repo-url]: https://github.com/xslet/window/
+[coverage-image]: https://coveralls.io/repos/github/xslet/window/badge.svg?branch=master
+[coverage-url]: https://coveralls.io/github/xslet/window?branch=master
