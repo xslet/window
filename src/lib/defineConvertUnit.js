@@ -41,7 +41,10 @@ function defineConvertUnit(nsWindow, window) {
     pxPerMm = pxPerMm || getPxPerMm(window);
     var pxPerRem = nsWindow.rootFontSize;
 
-    if (fromUnit === 'px') {
+    if (fromUnit === toUnit) {
+      return value;
+
+    } else if (fromUnit === 'px') {
       if (toUnit === 'mm') {
         return value / pxPerMm;
       }

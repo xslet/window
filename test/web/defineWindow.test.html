@@ -6,13 +6,17 @@
  <link  href="../../node_modules/mocha/mocha.css" rel="stylesheet"/>
  <script src="../../node_modules/mocha/mocha.js"></script>
  <script src="../../node_modules/chai/chai.js"></script>
+ <script src="../../node_modules/@xslet/platform/dist/xslet.platform.min.js">
+ </script>
 </head>
 <body>
  <div id="mocha"></div>
  <script>mocha.setup('bdd')</script>
+ <script src="lib/calcScrollbarWidth.js"></script>
  <script src="lib/defineUnitOfSize.js"></script>
  <script src="lib/defineRootFontSize.js"></script>
  <script src="lib/defineConvertUnit.js"></script>
+ <script src="lib/defineRelayout.js"></script>
  <script src="defineWindow.js"></script>
  <script src="defineWindow.test.js"></script>
  <script>

@@ -2,17 +2,16 @@
  * Copyright (C) 2016 xslet project.
  * This software is released under the MIT license.
  */
-
 /**
  * Defines the root font size as a property of `xslet.window` namespace.
  *
  * @private
  * @param nsWindow {object} - `xslet.window` namespace object.
- * @param htmlTag {HTMLElement} - A HTML element of DOM.
- * @param computedHtmlStyle {CSS2Properties} - A computed style object of
- *  `htmlTag`.
+ * @param window {Window} - A window object of DOM.
  */
-function defineRootFontSize(nsWindow, htmlTag, computedHtmlStyle) {
+function defineRootFontSize(nsWindow, window) {
+  var htmlTag = window.document.getElementsByTagName('html')[0];
+  var computedHtmlStyle = window.getComputedStyle(htmlTag);
 
   function getRootFontSize() {
     return parseInt(computedHtmlStyle.fontSize.slice(0, -2));

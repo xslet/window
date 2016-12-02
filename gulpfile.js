@@ -11,12 +11,15 @@ const plumber = require('gulp-plumber')
 const mocha = require('gulp-spawn-mocha')
 
 const path = require('path')
+const os = require('os')
 
 var filesForWeb = [
   'res/header.forweb',
   'src/lib/defineUnitOfSize.js',
   'src/lib/defineRootFontSize.js',
   'src/lib/defineConvertUnit.js',
+  'src/lib/calcScrollbarWidth.js',
+  'src/lib/defineRelayout.js',
   'src/defineWindow.js',
   'res/footer.forweb',
 ]
@@ -42,18 +45,18 @@ fun.webify = ['webifyDest', 'webifyTest']
 
 fun.webifyDest = () =>
   gulp.src(filesForWeb)
-      .pipe(replace(/(^|\n)(module\.exports *=.*\n)+/g, ''))
-      .pipe(replace(/(^|\n)(.*[;= (]require *\(.*\n)+/g, ''))
-      .pipe(replace(/(^|\n)(["']use strict["'];.*\n)+/g, ''))
-      .pipe(replace(/(^|\n)\/\* *\n \* *Copyright.*\n.*\n *\*\/ *\n/, ''))
+      .pipe(replace(/(^|[\r\n]+)(module\.exports *=.*[\r\n]+)+/g, os.EOL))
+      .pipe(replace(/(^|[\r\n]+)((|.*[; =]+)require *\(.*[\r\n]+)+/g, os.EOL))
+      .pipe(replace(/(^|[\r\n]+)(["']use strict["'];.*[\r\n]+)+/g, os.EOL))
+      .pipe(replace(/(^|[\r\n]+)\/\* *[\r\n]+ \* *Copyright.*[\r\n]+.*[\r\n]+ *\*\/ *[\r\n]+/, os.EOL))
       .pipe(concat(path.basename(destfile)))
       .pipe(gulp.dest(path.dirname(destfile)))
 
 fun.webifyTest = () =>
-  gulp.src(['src/**/*.js', 'test/node/**/*.js', '!test/node/helper'])
-      .pipe(replace(/(^|\n)(module\.exports *=.*\n)+/g, ''))
-      .pipe(replace(/(^|\n)(.*[;= (]require *\(.*\n)+/g, ''))
-      .pipe(replace(/(^|\n)(["']use strict["'];.*\n)+/g, ''))
+  gulp.src(['src/**/*.js', 'test/node/**/*.js', '!test/node/helper/**'])
+      .pipe(replace(/(^|[\r\n]+)(module\.exports *=.*[\r\n]+)+/g, os.EOL))
+      .pipe(replace(/(^|[\r\n]+)((|.*[; =]+)require *\(.*[\r\n]+)+/g, os.EOL))
+      .pipe(replace(/(^|[\r\n]+)(["']use strict["'];.*[\r\n]+)+/g, os.EOL))
       .pipe(gulp.dest('./test/web'))
 
 fun.minify = () =>
@@ -84,7 +87,7 @@ fun.copyDistToDocs = () =>
 
 fun.copyTestToDocs = () =>
   gulp.src('test/web/index.html')
-      .pipe(replace(/( |\n)*<hr\/>( |\n)*<footer>(.|\n)*<\/footer>/, ''))
+      .pipe(replace(/( |\r|\n)*<hr\/>( |\r|\n)*<footer>(.|\r|\n)*<\/footer>/, ''))
       .pipe(gulp.dest('docs/test/web'))
 
 fun.test = () =>

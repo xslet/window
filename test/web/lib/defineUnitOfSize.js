@@ -2,7 +2,6 @@
  * Copyright (C) 2016 xslet project.
  * This software is released under the MIT license.
  */
-
 /**
  * Defines a unit of a whole of HTML page as a property of `xslet.window`
  * namespace.

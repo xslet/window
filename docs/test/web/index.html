@@ -4,24 +4,27 @@
  <meta charset="utf-8"/>
  <title>xslet.window Test</title>
  <style>
-  body { font: 12px/2.0 "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  html { font: 12px/2.0 "Helvetica Neue", Helvetica, Arial, sans-serif; }
   body { margin: 30px 50px }
   main { display: flex }
   main > section:not(:first-of-type) { margin-left: 4rem; }
   div.h1 { font-size: 1.2rem; padding-left: 1.0rem; }
-  div.h2 { font-size: 1.0rem; padding-left: 1.5rem; padding-top: 0.78rem; }
+  div.h2 { font-size: 1.0rem; padding-left: 1.5rem; padding-top: 0.5rem; }
+  div.body { padding-left: 2.5rem; }
+  section#runOut { color: #aaa; }
+  section#runOut.on { color: #d30; }
  </style>
- <script src="../../dist/xslet.window.min.js"></script>
 </head>
 <body>
-<script>
-xslet.window.rootFontSize = 13;
-</script>
+ <script src="../../dist/xslet.window.min.js"></script>
+ <script>
+ xslet.window.rootFontSize = 13;
+ </script>
 
-<main>
- <section>
-  <div class="h1">Properties of <code>xslet.window</code></div>
-  <script>
+ <main>
+  <section>
+   <div class="h1">Properties of <code>xslet.window</code></div>
+   <script>
    var text = '<ul>';
 
    text += '<li>';
@@ -32,17 +35,25 @@ xslet.window.rootFontSize = 13;
    text += 'xslet.window.rootFontSize = ' + xslet.window.rootFontSize;
    text += '</li>';
 
+   text += '<li>';
+   text += 'xslet.window.scrollbarWidth = ' + xslet.window.scrollbarWidth;
+   text += '</li>';
+
+   text += '<li>';
+   text += 'xslet.window.relayoutDelay = ' + xslet.window.relayoutDelay;
+   text += '</li>';
+
    text += '</ul>';
 
    document.write(text);
-  </script>
- </section>
+   </script>
+  </section>
 
- <section>
-  <div class="h1">Functions of <code>xslet.window</code></div>
   <section>
-   <div class="h2"><code>xslet.window.convertUnit</code></div>
-   <script>
+   <div class="h1">Functions of <code>xslet.window</code></div>
+   <section>
+    <div class="h2"><code>xslet.window.convertUnit</code></div>
+    <script>
     var text = '<ul>';
 
     text += '<li>';
@@ -58,11 +69,89 @@ xslet.window.rootFontSize = 13;
     text += '</ul>';
 
     document.write(text);
-   </script>
+    </script>
+   </section>
+
+   <section>
+    <div class="h2"><code>xslet.window.addRelayoutListener</code></div>
+    <div class="body">
+     <button id="addBtn" onclick="add()">Add</button>
+    </div>
+   </section>
+
+   <section>
+    <div class="h2"><code>xslet.window.removeRelayoutListener</code></div>
+    <div class="body">
+     <button id="delBtn" onclick="del()">Remove</button>
+    </div>
+   </section>
+
+   <section>
+    <div class="h2"><code>xslet.window.relayout</code></div>
+    <div class="body">
+     <button id="runBtn" onclick="run()">Relayout</button>
+    </div>
+   </section>
+
   </section>
 
- </section>
-</main>
+  <section>
+   <div class="h1">Outputs of event listeners</div>
+   <section>
+    <div class="h2">window resize</div>
+    <div class="body">
+     <div>inner width = <span id="windowInnerWidth"></span> px</div>
+     <div>inner height = <span id="windowInnerHeight"></span> px</div>
+    </div>
+    <script>
+     window.addEventListener('resize', function() {
+       document.getElementById('windowInnerWidth').innerText =
+         window.innerWidth;
+       document.getElementById('windowInnerHeight').innerText =
+         window.innerHeight;
+     });
+    </script>
+   </section>
+
+   <section id="runOut">
+    <div class="h2">relayout<span id="hasListener"></span></div>
+    <div class="body">
+     <div>event.width = <span id="relayoutWidth"></span> px</div>
+     <div>event.height = <span id="relayoutHeight"></span> px</div>
+    </div>
+   </section>
+  </section>
+
+  <script>
+  var listener = function(event) {
+    document.getElementById('relayoutWidth').innerText = event.width;
+    document.getElementById('relayoutHeight').innerText = event.height;
+  };
+  var addBtn = document.getElementById('addBtn');
+  var delBtn = document.getElementById('delBtn');
+  var runBtn = document.getElementById('runBtn');
+  var runOut = document.getElementById('runOut');
+  function add() {
+    xslet.window.addRelayoutListener(listener);
+    addBtn.disabled = true;
+    delBtn.disabled = false;
+    runOut.className = 'on';
+  }
+  function del() {
+    xslet.window.removeRelayoutListener(listener);
+    addBtn.disabled = false;
+    delBtn.disabled = true;
+    runOut.className = '';
+  }
+  function run() {
+    xslet.window.relayout();
+  }
+  (function init() {
+    addBtn.disabled = false;
+    delBtn.disabled = true;
+  }());
+  </script>
+ </main>
 
 </body>
 </html>

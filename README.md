@@ -3,32 +3,35 @@
 
 Gets window informations and provide operations related to window.
 
-Build
------
+Install
+-------
 
-Build this module:
+### Install from npm
+
+Executes following command to install this package from npm.
 
 ```sh
-$ gulp build
+$ npm install --save @xslet/window
 ```
 
-Usage
------
-
-Load this module in a browser:
+### Load this pakage in a browser
 
 ```js
 <script src="xslet.window.min.js"></script>
 ```
 
-Use `xslet.window.unitOfSize`:
+Usage
+-----
+
+### .unitOfSize
 
 ```js
 xslet.window.unitOfSize = 'rem'
-document.getElementById('id1').style.width = 10 + xslet.window.unitOfSize // = '10rem'
 ```
 
-Use `xslet.window.rootFontSize`:
+This property can be set only once before it is used.
+
+### .rootFontSize
 
 ```js
 xslet.window.rootFontSize = '3.51mm'
@@ -38,44 +41,124 @@ xslet.window.rootFontSize = 13  // = 13 [px]
 document.getElementById('id2').style.fontSize = '2rem' // The element's font size is 26px 
 ```
 
-Use `xslet.window.convertUnit`:
+This property is a number, but can be set a string which consists of a number and a unit (like '2.5mm'). The unit can be set: `px`, `mm` or `rem`.
+
+### .convertUnit
 
 ```js
 xslet.window.rootFontSize = 13
 xslet.window.convertUnit(2, 'rem', 'px') // => 26px
 ```
 
+### .scrollbarWidth
+
+```js
+xslet.window.scrollbarWidth // => 17, on IE11
+```
+
+Since this property uses `.unitOfSize` as the unit, this value is also determined with `.unitOfSize`.
+
+Some browsers changes its scroll bar width by zooming (to keep appearance width of its scroll bar). This property solves the change by re-calculating when window contents are re-layouted.
+
+### .addRelayoutListener
+
+```js
+xslet.window.addRelayoutListener(function(event) {
+  console.log('re-layout window contents! : (' + event.width + ', ' + event.height + ')');
+})
+```
+
+The listener function is called everytime the browser is resized, but the times of calling are much less than the number of resize events.
+
+A re-layout listener function is passed an argument of which properties are `.width` and `.height`, which is inner width and height of a window.
+For the unit of these values, `.unitOfSize` is used. 
+
+### .relayout
+
+```js
+xslet.window.relayout()
+```
+
+This code calls re-layout listener functions manually.
+
 APIs
 ----
 
-#### <u>xslet.window.unitOfSize</u>
+### Properties
 
-The unit which used in xslet modules.
+#### <u>.unitOfSize</u>
+
+Is used in whole of xslet modules.
 This value allowed are `'px'`, `'mm'` and `'rem'` and can be set only once.
 
-Type: string
+**Type:** string
 
-#### <u>xslet.window.rootFontSize</u>
+#### <u>.rootFontSize</u>
 
-The font size which is assigned to the HTML element.
-This value is a number and the unit of this property is `'px'`, but can be set in unit either `'px'` or `'mm'` with a string like `'10px'` or `'2mm'`.
+Is assigned to the HTML element.
+This value is a number and the unit is `'px'`, but can be set in unit either
+`'px'` or `'mm'` with a string like `'10px'` or `'2mm'`.
 
-Type: number
+**Type:** number
 
-#### <u>xslet.window.convertUnit(value, fromUnit, toUnit)</u>
+#### <u>.scrollbarWidth</u>
 
-Converts `value` in `fromUnit` to new value in `toUnit`.
-The units allowed are either `'px'`, `'mm'` and `'rem'`. 
+Is the scroll bar width.
+The unit of this value is `xslet.window.unitOfSize`.
+This value is re-calculated when window contents are re-layouted, because some browsers change their scroll bar widths by zooming.
 
-**Parameter:**
+**Type:** number
 
-* value {number} : A value to be converted.
-* fromUnit {string} : The unit of `value`.
-* toUnit {string} : The unit of value after converted.
+#### <u>.relayoutDelay</u>
+
+Is the delay time of re-layouting against resize events.
+The unit of this value is milli-second.
+
+**Type:** number
+
+### Methods
+
+#### <u>.convertUnit(value, fromUnit, toUnit)</u>
+
+Converts a value between specified units.
+The units can be specified among `'px'`, `'mm'` and `'rem'`.
+
+**Parameters:**
+
+   * **value** {number} : A value to be converted.
+   * **fromUnit** {string} : A unit of a value before conversion.
+   * **toUnit** {string} : A unit of a value after conversion.
 
 **Return:**
 
-* {number} : The value after converted.
+   * {number} : A value after conversion.
+
+#### <u>.addRelayoutListener(listener)</u>
+
+Adds a listener function to be called when window contents are re-layouted.
+Re-layouting window contents are made done at the times of first viewing, window resizing, changing a part of view, and so on. 
+
+**Parameters:**
+
+* **listener** {function} : A listener function.
+    This function has an *event* object as an argument of which properties are follows:
+    
+    * <i>event</i>**.width** {number} : Inner width of a window. 
+        The unit of this value is `xslet.window.unitOfSize`.
+    * <i>event</i>**.height** {number} : Inner height of a window.
+        The unit of this value is `xslet.window.unitOfSize`. 
+
+#### <u>.removeRelayoutListener(listener)</u>
+
+Removes a listener function for re-layout.
+
+**Parameters:**
+
+* **listener** {function} : A listener function.
+
+#### <u>.relayout()</u>
+
+Executes re-layout event listener functions manually.
 
 Behavior checks on browsers
 ---------------------------

@@ -1,9 +1,8 @@
+
 var expect = chai.expect;
 
 var obj = {};
-var htmlTag = window.document.getElementsByTagName('html')[0];
-var computedStyle = window.getComputedStyle(htmlTag);
-defineRootFontSize(obj, htmlTag, computedStyle);
+defineRootFontSize(obj, window);
 
 describe('defineRootFontSize', function() {
 

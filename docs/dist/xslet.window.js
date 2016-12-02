@@ -52,11 +52,11 @@ function defineUnitOfSize(nsWindow) {
  *
  * @private
  * @param nsWindow {object} - `xslet.window` namespace object.
- * @param htmlTag {HTMLElement} - A HTML element of DOM.
- * @param computedHtmlStyle {CSS2Properties} - A computed style object of
- *  `htmlTag`.
+ * @param window {Window} - A window object of DOM.
  */
-function defineRootFontSize(nsWindow, htmlTag, computedHtmlStyle) {
+function defineRootFontSize(nsWindow, window) {
+  var htmlTag = window.document.getElementsByTagName('html')[0];
+  var computedHtmlStyle = window.getComputedStyle(htmlTag);
 
   function getRootFontSize() {
     return parseInt(computedHtmlStyle.fontSize.slice(0, -2));
@@ -134,7 +134,10 @@ function defineConvertUnit(nsWindow, window) {
     pxPerMm = pxPerMm || getPxPerMm(window);
     var pxPerRem = nsWindow.rootFontSize;
 
-    if (fromUnit === 'px') {
+    if (fromUnit === toUnit) {
+      return value;
+
+    } else if (fromUnit === 'px') {
       if (toUnit === 'mm') {
         return value / pxPerMm;
       }
@@ -173,6 +176,133 @@ function defineConvertUnit(nsWindow, window) {
 
 
 /**
+ * Calculates current scroll bar width.
+ *
+ * Scroll bar width is different by browsers, and some browsers changes it
+ * by zooming.
+ * This function calculates current scroll bar width dynamically.
+ * The unit of this value is `'px'`.
+ *
+ * @private
+ * @param window {Window} - The window object of DOM.
+ * @return scroll bar width [px].
+ */
+function calcScrollbarWidth(window) {
+  var divTag = window.document.createElement('div');
+  divTag.style.position = 'absolute';
+  divTag.style.visibility = 'hiddden';
+  divTag.style.overflow = 'scroll';
+  divTag.style.width = '100px';
+  divTag.style.height = '100px';
+  window.document.body.appendChild(divTag);
+
+  var scrollbarWidth = (divTag.offsetWidth - divTag.clientWidth);
+  divTag.parentNode.removeChild(divTag);
+  return scrollbarWidth;
+}
+
+
+/**
+ * Defines some properties and methods for re-layouting window contents.
+ *
+ * @private
+ * @param nsWindow {object} - The `xslet.window` namespace object.
+ * @param window {Window} - The window object of DOM.
+ */
+function defineRelayout(nsWindow, window) {
+  var scrollbarWidth = calcScrollbarWidth(window);
+
+  var relayoutListeners = [];
+  var delayMillis = 100;
+  var delayCounter = 0;
+
+  function addRelayoutListener(listener) {
+    if (typeof listener !== 'function') {
+      return;
+    }
+    if (relayoutListeners.indexOf(listener) < 0) {
+      relayoutListeners.push(listener);
+    }
+  }
+
+  function removeRelayoutListener(listener) {
+    for (var i = relayoutListeners.length - 1; i >= 0; i--) {
+      if (relayoutListeners[i] === listener) {
+        relayoutListeners.splice(i, 1);
+      }
+    }
+  }
+
+  function relayoutImmediately() {
+    delayCounter = 0;
+    scrollbarWidth = calcScrollbarWidth(window);
+
+    var event = {
+      width: convertUnit(window.innerWidth, nsWindow),
+      height: convertUnit(window.innerHeight, nsWindow),
+    };
+
+    for (var i = 0, n = relayoutListeners.length; i < n; i++) {
+      relayoutListeners[i](event);
+    }
+  }
+
+  function delayRelayouting() {
+    delayCounter--;
+    if (delayCounter === 0) {
+      relayoutImmediately();
+    } else if (delayCounter < 0) {
+      delayCounter = 0;
+    }
+  }
+
+  function relayout() {
+    delayCounter = 0;
+    window.setTimeout(relayoutImmediately, 50);
+  }
+
+  function relayoutLater() {
+    delayCounter++;
+    window.setTimeout(delayRelayouting, delayMillis);
+  }
+
+  Object.defineProperty(nsWindow, 'scrollbarWidth', {
+    enumerable: true,
+    get: function() {
+      return convertUnit(scrollbarWidth, nsWindow);
+    },
+    set: function() {},
+  });
+
+  Object.defineProperty(nsWindow, 'addRelayoutListener', {
+    enumerable: true,
+    value: addRelayoutListener,
+  });
+
+  Object.defineProperty(nsWindow, 'removeRelayoutListener', {
+    enumerable: true,
+    value: removeRelayoutListener,
+  });
+
+  Object.defineProperty(nsWindow, 'relayoutDelay', {
+    enumerable: true,
+    value: delayMillis,
+  });
+
+  Object.defineProperty(nsWindow, 'relayout', {
+    enumerable: true,
+    value: relayout,
+  });
+
+  window.addEventListener('resize', relayoutLater);
+}
+
+function convertUnit(value, nsWindow) {
+  return nsWindow.convertUnit(value, 'px', nsWindow.unitOfSize);
+}
+
+
+/**
  * Defines `xslet.window` namespace.
  *
  * @private
@@ -180,8 +310,15 @@ function defineConvertUnit(nsWindow, window) {
  * @param window {Window} - A window object of DOM.
  */
 function defineWindow(xslet, window) {
-  var htmlTag = window.document.getElementsByTagName('html')[0];
-  var computedHtmlStyle = window.getComputedStyle(htmlTag);
+  Object.defineProperty(xslet, 'window', {
+    enumerable: true,
+    value: {},
+  });
+
+  defineUnitOfSize(xslet.window);
+  defineRootFontSize(xslet.window, window);
+  defineConvertUnit(xslet.window, window);
+  defineRelayout(xslet.window, window);
 
   /**
    * Is the namespace for window informations and operations.
@@ -192,27 +329,47 @@ function defineWindow(xslet, window) {
    *   This value is a number, and can be specified as a number or a string
    *   of which format is `value + unit`.
    *   The unit allowed is either `'px'`, `'mm'` or `'rem'`.
+   * @prop scrollbarWidth {number} - The scroll bar width.
+   *   The unit of this value is same with `unitOfSize` property.
+   *   This value can be updated by re-layouting a page, because some browsers
+   *   change its scroll bar width by zooming.
+   * @prop relayoutDelay {number} - The delay time to re-layout a page against
+   *   resize events. The unit of this value is millisecond.
    */
-  Object.defineProperty(xslet, 'window', {
-    enumerable: true,
-    value: {},
-  });
-
-  defineUnitOfSize(xslet.window);
-  defineRootFontSize(xslet.window, htmlTag, computedHtmlStyle);
 
   /**
    * Converts `value` in `fromUnit` to new value in `toUnit`.
    * The units allowed are either `'px'`, `'mm'` and `'rem'`.
    *
+   * @method xslet.window.convertUnit
    * @param value {number} - A value to be converted.
    * @param fromUnit {string} - The unit of `value`.
    * @param toUnit {string} - The unit of value after converted.
    * @return {number} The value after converted.
-   * @memberof xslet.window
-   * @method xslet.window.convertUnit
    */
-  defineConvertUnit(xslet.window, window);
+
+  /**
+   * Re-layout a page.
+   * This method forcely executes re-layout listeners registered by
+   * `addRelayoutListener` method.
+   *
+   * @method xslet.window.relayout
+   */
+
+  /**
+   * Adds a re-layout listener which is to be called when a browser is resized
+   * or `xslet.window.relayout` method is executed.
+   *
+   * @method xslet.window.addRelayoutListener
+   * @param listener {function} - A listener function.
+   */
+
+  /**
+   * Removes a registered re-layout listener.
+   *
+   * @method xslet.window.removeRelayoutListener
+   * @param listener {function} - A listener function.
+   */
 }
 
 }());

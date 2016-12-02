@@ -1,5 +1,5 @@
-var expect = chai.expect;
 
+var expect = chai.expect;
 describe('xslet.window', function() {
 
   describe('.unitOfSize', function() {
@@ -73,5 +73,72 @@ describe('xslet.window', function() {
       done();
     });
   });
+
+  describe('.scrollbarWidth', function() {
+
+    it('Should get scroll bar width', function(done) {
+      var xslet = {};
+      defineWindow(xslet, window);
+      expect(xslet.window.scrollbarWidth).to.be.a('number');
+      done();
+    });
+  });
+
+  describe('.relayout', function() {
+
+    it('Should execute relayout listeners manually', function(done) {
+      var logger = '';
+      var LOG = 'RE-LAYOUT\n';
+      var listener = function() {
+        logger += LOG;
+      };
+
+      var xslet = {};
+      defineWindow(xslet, window);
+      xslet.window.addRelayoutListener(listener);
+
+      xslet.window.relayout();
+      xslet.window.relayout();
+      xslet.window.relayout();
+
+      setTimeout(function() {
+        expect(logger).to.equal(LOG + LOG + LOG);
+        done();
+      }, 500);
+    });
+
+    it('Should execute relayout listeners by window resizing', function(done) {
+      var logger = '';
+      var LOG = 'RE-LAYOUT\n';
+      var listener = function() {
+        logger += LOG;
+      };
+
+      var xslet = {};
+      defineWindow(xslet, window);
+      xslet.window.addRelayoutListener(listener);
+
+      resizeWindow();
+      resizeWindow();
+      resizeWindow();
+
+      setTimeout(function() {
+        expect(logger).to.equal(LOG);
+        done();
+      }, 500);
+    });
+  });
 });
+
+function resizeWindow() {
+  setTimeout(function() {
+    if (xslet.platform.ua.MSIE) {
+      var event = window.document.createEvent('UIEvents');
+      event.initUIEvent('resize', true, false, window, 0);
+      window.dispatchEvent(event);
+    } else {
+      window.dispatchEvent(new window.Event('resize'));
+    }
+  }, 50);
+}
 
