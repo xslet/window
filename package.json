@@ -1,6 +1,6 @@
 {
   "name": "@xslet/window",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Gets window informations and provide operations related to window.",
   "main": "src/defineWindow.js",
   "scripts": {
