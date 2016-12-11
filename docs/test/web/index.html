@@ -153,5 +153,28 @@
   </script>
  </main>
 
+ <hr/>
+
+ <footer>
+  <script>
+  var libs = [
+    'calcScrollbarWidth',
+    'defineConvertUnit',
+    'defineRelayout',
+    'defineRootFontSize',
+    'defineUnitOfSize',
+  ];
+
+  var text = '';
+  libs.forEach(function(lib, i) {
+    text += '<a href="./lib/' + lib + '.test.html">&#x1f517;' + lib + '</a>';
+    text += ' | ';
+  });
+  text += '<a href="./defineWindow.test.html">&#x1f517;defineWindow</a>';
+
+  document.write(text);
+  </script>
+ </footer>
+
 </body>
 </html>
