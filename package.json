@@ -23,23 +23,24 @@
   },
   "homepage": "https://github.com/xslet/window#readme",
   "devDependencies": {
-    "@xslet/platform": "^0.1.1",
+    "@xslet/platform": "^0.1.4",
     "chai": "^3.5.0",
     "coveralls": "^2.11.15",
     "del": "^2.2.2",
     "gulp": "github:gulpjs/gulp#4.0",
-    "gulp-concat": "^2.6.0",
+    "gulp-concat": "^2.6.1",
     "gulp-eslint": "^3.0.1",
     "gulp-fun-style": "^0.3.2",
     "gulp-jsdoc3": "^1.0.1",
     "gulp-plumber": "^1.1.0",
     "gulp-replace": "^0.5.4",
-    "gulp-sourcemaps": "^2.2.0",
+    "gulp-sourcemaps": "^2.4.0",
     "gulp-spawn-mocha": "^3.1.0",
     "gulp-uglify": "^2.0.0",
     "istanbul": "^0.4.5",
-    "jsdom": "^9.8.3",
-    "mocha": "^3.1.2",
+    "jsdom": "^9.9.1",
+    "mocha": "^3.2.0",
     "mocha-lcov-reporter": "^1.2.0"
-  }
+  },
+  "dependencies": {}
 }

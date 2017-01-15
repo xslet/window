@@ -1,12 +1,12 @@
 'use strict';
 
-var redefineGetComputedStyle = require('./window/redefineGetComputedStyle');
-var redefineCreateElement = require('./document/redefineCreateElement');
+var redefineWindow = require('./window');
+var redefineDocument = require('./document');
 
 module.exports = function(jsdom) {
   var window = jsdom.defaultView;
-  redefineGetComputedStyle(window);
-  redefineCreateElement(window.document);
+  redefineWindow(window);
+  redefineDocument(window.document);
   return window;
 };
 

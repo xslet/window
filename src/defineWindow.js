@@ -8,6 +8,7 @@
 var defineUnitOfSize = require('./lib/defineUnitOfSize');
 var defineRootFontSize = require('./lib/defineRootFontSize');
 var defineConvertUnit = require('./lib/defineConvertUnit');
+var defineScrollPosition = require('./lib/defineScrollPosition');
 var defineRelayout = require('./lib/defineRelayout');
 
 /**
@@ -26,6 +27,7 @@ function defineWindow(xslet, window) {
   defineUnitOfSize(xslet.window);
   defineRootFontSize(xslet.window, window);
   defineConvertUnit(xslet.window, window);
+  defineScrollPosition(xslet.window, window);
   defineRelayout(xslet.window, window);
 
   /**
@@ -41,6 +43,10 @@ function defineWindow(xslet, window) {
    *   The unit of this value is same with `unitOfSize` property.
    *   This value can be updated by re-layouting a page, because some browsers
    *   change its scroll bar width by zooming.
+   * @prop scrollLeft {number} - The horizontal scroll position of window.
+   *   The unit of this value is same with `unitOfSize` property.
+   * @prop scrollTop {number} - The vertical scroll position of window.
+   *   The unit of this value is same with `unitOfSize` property.
    * @prop relayoutDelay {number} - The delay time to re-layout a page against
    *   resize events. The unit of this value is millisecond.
    */
