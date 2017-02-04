@@ -2,7 +2,8 @@
 
 var SCROLL_BAR_WIDTH = 17;
 
-function redefineCreateElement(document) {
+function redefineCreateElement(window) {
+  var document = window.document;
   var originalCreateElement = document.createElement.bind(document);
 
   document.createElement = function(tagName) {

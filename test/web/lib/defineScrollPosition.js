@@ -2,9 +2,6 @@
  * Copyright (C) 2016 xslet project.
  * This software is released under the MIT license.
  */
-
-'use strict';
-
 /**
  * Defines properties for scroll position.
  *
@@ -13,7 +10,6 @@
  * @param window {Window} - The window object of DOM.
  */
 function defineScrollPosition(nsWindow, window) {
-  var xslet = {}; require('@xslet/platform')(xslet, window);
   var doc = window.document;
   var documentElement = doc.documentElement;
 
@@ -125,5 +121,3 @@ function defineScrollPosition(nsWindow, window) {
 }
 
 function readonly() {}
-
-module.exports = defineScrollPosition;

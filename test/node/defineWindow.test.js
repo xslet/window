@@ -3,11 +3,25 @@
 var jsdom = require('jsdom').jsdom('');
 var window = require('./helper/jsdom-helper')(jsdom);
 var defineWindow = require('../../src/defineWindow');
-var definePlatform = require('@xslet/platform');
 var chai = require('chai');
 var expect = chai.expect;
 
+var xslet = {}; require('@xslet/platform')(xslet, window);
+
+var body = window.document.body;
+var documentElement = window.document.documentElement;
+
+body.style.width = (documentElement.clientWidth + 1000) + 'px';
+body.style.height = (documentElement.clientHeight + 1000) + 'px';
+
 describe('xslet.window', function() {
+
+  after(function() {
+    body.scrollLeft = 0;
+    body.scrollTop = 0;
+    documentElement.scrollLeft = 0;
+    documentElement.scrollTop = 0;
+  });
 
   describe('.unitOfSize', function() {
 
@@ -92,62 +106,156 @@ describe('xslet.window', function() {
   });
 
   describe('.scrollLeft/.scrollTop', function() {
-    var ns = {};
-    before(function() {
-      definePlatform(ns, window);
-      defineWindow(ns, window);
-      ns.window.unitOfSize = 'rem';
-      ns.window.rootFontSize = 16;
-    });
 
     it('Should get zero position when not scrolling', function(done) {
-      expect(!!window.document.body.scrollLeft).to.be.false;
-      expect(!!window.document.body.scrollTop).to.be.false;
-      expect(!!window.document.documentElement.scrollLeft).to.be.false;
-      expect(!!window.document.documentElement.scrollTop).to.be.false;
+      var ns = {};
+      defineWindow(ns, window);
+
+      expect(!!body.scrollLeft).to.be.false;
+      expect(!!body.scrollTop).to.be.false;
+      expect(!!documentElement.scrollLeft).to.be.false;
+      expect(!!documentElement.scrollTop).to.be.false;
       expect(ns.window.scrollLeft).to.equal(0);
       expect(ns.window.scrollTop).to.equal(0);
       done();
     });
 
     it('Should set scroll position', function(done) {
+      var ns = {};
+      defineWindow(ns, window);
+      ns.window.unitOfSize = 'rem';
+      ns.window.rootFontSize = 16;
+
       ns.window.scrollLeft = 3;
       ns.window.scrollTop = 12;
-      expect(window.document.body.scrollLeft).to.equal(3 * 16);
-      expect(window.document.body.scrollTop).to.equal(12 * 16);
-      expect(window.document.documentElement.scrollLeft).to.equal(3 * 16);
-      expect(window.document.documentElement.scrollTop).to.equal(12 * 16);
+
+      if (xslet.platform.ua.MSIE || xslet.platform.ua.FIREFOX) {
+        expect(body.scrollLeft).to.equal(0);
+        expect(body.scrollTop).to.equal(0);
+        expect(documentElement.scrollLeft).to.equal(3 * 16);
+        expect(documentElement.scrollTop).to.equal(12 * 16);
+      } else {
+        expect(body.scrollLeft).to.equal(3 * 16);
+        expect(body.scrollTop).to.equal(12 * 16);
+        expect(documentElement.scrollLeft).to.equal(0);
+        expect(documentElement.scrollTop).to.equal(0);
+      }
+
       expect(ns.window.scrollLeft).to.equal(3);
       expect(ns.window.scrollTop).to.equal(12);
       done();
     });
 
     it('Should get scroll position', function(done) {
-      if (ns.platform.ua.MSIE || ns.platform.ua.FIREFOX) {
-        window.document.documentElement.scrollLeft = 10;
-        window.document.documentElement.scrollTop = 100;
+      var ns = {};
+      defineWindow(ns, window);
+      ns.window.unitOfSize = 'rem';
+      ns.window.rootFontSize = 16;
+
+      if (xslet.platform.ua.MSIE || xslet.platform.ua.FIREFOX) {
+        documentElement.scrollLeft = 10;
+        documentElement.scrollTop = 100;
       } else {
-        window.document.body.scrollLeft = 10;
-        window.document.body.scrollTop = 100;
+        body.scrollLeft = 10;
+        body.scrollTop = 100;
       }
       expect(ns.window.scrollLeft).to.equal(10/16);
       expect(ns.window.scrollTop).to.equal(100/16);
       done();
     });
 
-    it('Should throw error if scroll position is not set a number',
-    function(done) {
-      [null, undefined, true, false, '123', '', [], {}].forEach(function(v) {
-        expect(function() {
-          ns.window.scrollLeft = v;
-        }).throws(TypeError);
+    it('Should ignore if scroll position is not set a number', function(done) {
+      var ns = {};
+      defineWindow(ns, window);
 
-        expect(function() {
-          ns.window.scrollTop = v;
-        }).throws(TypeError);
+      ns.window.scrollLeft = 30;
+      ns.window.scrollTop = 40;
+
+      [null, true, false, '123', '', [], {}, NaN].forEach(function(v) {
+        expect(ns.window.scrollLeft).to.equal(30);
+        expect(ns.window.scrollTop).to.equal(40);
       });
       done();
     });
+  });
+
+  describe('.scrollWidth/.scrollHeight', function() {
+
+    it('Should get scroll width/height', function(done) {
+      var ns = {};
+      defineWindow(ns, window);
+
+      if (xslet.platform.ua.MSIE || xslet.platform.ua.FIREFOX) {
+        expect(ns.window.scrollWidth).to.equal(documentElement.scrollWidth);
+        expect(ns.window.scrollHeight).to.equal(documentElement.scrollHeight);
+      } else {
+        expect(ns.window.scrollWidth).to.equal(body.scrollWidth);
+        expect(ns.window.scrollHeight).to.equal(body.scrollHeight);
+      }
+      done();
+    });
+
+    it('Should get scroll width/height', function(done) {
+      var ns = {};
+      defineWindow(ns, window);
+
+      ns.window.unitOfSize = 'rem';
+      ns.window.rootFontSize = 16;
+
+      if (xslet.platform.ua.MSIE || xslet.platform.ua.FIREFOX) {
+        var de = documentElement;
+        expect(ns.window.scrollWidth).to.equal(de.scrollWidth / 16);
+        expect(ns.window.scrollHeight).to.equal(de.scrollHeight / 16);
+      } else {
+        expect(ns.window.scrollWidth).to.equal(body.scrollWidth / 16);
+        expect(ns.window.scrollHeight).to.equal(body.scrollHeight / 16);
+      }
+      done();
+    });
+
+  });
+
+  describe('.maxScrollLeft/.maxScrollTop', function() {
+
+    it('Should get max scroll left/top', function(done) {
+      var ns = {};
+      defineWindow(ns, window);
+
+      var cw = documentElement.clientWidth,
+          ch = documentElement.clientHeight;
+
+      if (xslet.platform.ua.MSIE || xslet.platform.ua.FIREFOX) {
+        var de = documentElement;
+        expect(ns.window.maxScrollLeft).to.equal(de.scrollWidth - cw);
+        expect(ns.window.maxScrollTop).to.equal(de.scrollHeight - ch);
+      } else {
+        expect(ns.window.maxScrollLeft).to.equal(body.scrollWidth - cw);
+        expect(ns.window.maxScrollTop).to.equal(body.scrollHeight - ch);
+      }
+      done();
+    });
+
+    it('Should get max scroll left/top', function(done) {
+      var ns = {};
+      defineWindow(ns, window);
+
+      ns.window.unitOfSize = 'rem';
+      ns.window.rootFontSize = 16;
+
+      var cw = documentElement.clientWidth,
+          ch = documentElement.clientHeight;
+
+      if (xslet.platform.ua.MSIE || xslet.platform.ua.FIREFOX) {
+        var de = documentElement;
+        expect(ns.window.maxScrollLeft).to.equal((de.scrollWidth - cw) / 16);
+        expect(ns.window.maxScrollTop).to.equal((de.scrollHeight - ch) / 16);
+      } else {
+        expect(ns.window.maxScrollLeft).to.equal((body.scrollWidth - cw) / 16);
+        expect(ns.window.maxScrollTop).to.equal((body.scrollHeight - ch) / 16);
+      }
+      done();
+    });
+
   });
 
   describe('.relayout', function() {
@@ -181,7 +289,7 @@ describe('xslet.window', function() {
       };
 
       var ns = {};
-      definePlatform(ns, window);
+      ns.platform = xslet.platform;
       defineWindow(ns, window);
       ns.window.addRelayoutListener(listener);
 
@@ -194,7 +302,9 @@ describe('xslet.window', function() {
         done();
       }, 500);
     });
+
   });
+
 });
 
 function resizeWindow(ns) {

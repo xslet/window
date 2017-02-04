@@ -86,7 +86,7 @@
 
 
     <section class="readme-section">
-        <article><h1><a href="https://github.com/xslet/window/">@xslet/window</a> <a href="https://xslet.github.io/window/"><img src="http://img.shields.io/badge/HP-github.io-ffbbbb.svg" alt="Github.io"></a> <a href="https://www.npmjs.org/package/@xslet/window/"><img src="http://img.shields.io/badge/npm-v0.2.0-blue.svg" alt="NPM version"></a> <a href="https://opensource.org/licenses/MIT"><img src="http://img.shields.io/badge/license-MIT-green.svg" alt="MIT License"></a> <a href="https://coveralls.io/github/xslet/window?branch=master"><img src="https://coveralls.io/repos/github/xslet/window/badge.svg?branch=master" alt="Coverage Status"></a></h1><p>Gets window informations and provide operations related to window.</p>
+        <article><h1><a href="https://github.com/xslet/window/">@xslet/window</a> <a href="https://xslet.github.io/window/"><img src="http://img.shields.io/badge/HP-github.io-ffbbbb.svg" alt="Github.io"></a> <a href="https://www.npmjs.org/package/@xslet/window/"><img src="http://img.shields.io/badge/npm-v0.3.0-blue.svg" alt="NPM version"></a> <a href="https://opensource.org/licenses/MIT"><img src="http://img.shields.io/badge/license-MIT-green.svg" alt="MIT License"></a> <a href="https://coveralls.io/github/xslet/window?branch=master"><img src="https://coveralls.io/repos/github/xslet/window/badge.svg?branch=master" alt="Coverage Status"></a></h1><p>Gets window informations and provide operations related to window.</p>
 <h2>Install</h2><h3>Install from npm</h3><p>Executes following command to install this package from npm.</p>
 <pre class="prettyprint source lang-sh"><code>$ npm install --save @xslet/window</code></pre><h3>Load this pakage in a browser</h3><pre class="prettyprint source lang-js"><code>&lt;script src=&quot;xslet.window.min.js&quot;>&lt;/script></code></pre><h2>Usage</h2><h3>.unitOfSize</h3><pre class="prettyprint source lang-js"><code>xslet.window.unitOfSize = 'rem'</code></pre><p>This property can be set only once before it is used.</p>
 <h3>.rootFontSize</h3><pre class="prettyprint source lang-js"><code>xslet.window.rootFontSize = '3.51mm'
@@ -97,6 +97,16 @@ document.getElementById('id2').style.fontSize = '2rem' // The element's font siz
 <h3>.convertUnit</h3><pre class="prettyprint source lang-js"><code>xslet.window.rootFontSize = 13
 xslet.window.convertUnit(2, 'rem', 'px') // => 26px</code></pre><h3>.scrollbarWidth</h3><pre class="prettyprint source lang-js"><code>xslet.window.scrollbarWidth // => 17, on IE11</code></pre><p>Since this property uses <code>.unitOfSize</code> as the unit, this value is also determined with <code>.unitOfSize</code>.</p>
 <p>Some browsers changes its scroll bar width by zooming (to keep appearance width of its scroll bar). This property solves the change by re-calculating when window contents are re-layouted.</p>
+<h3>.scrollLeft/.scrollTop</h3><pre class="prettyprint source lang-js"><code>xslet.window.scrollLeft = 10
+xslet.window.scrollTop = 100
+
+xslet.window.scrollLeft // => 10
+xslet.window.scrollTop // => 100</code></pre><p>For the unit of these values, <code>.unitOfSize</code> is used.</p>
+<h3>.maxScrollLeft/.maxScrollTop/.scrollWidth/.scrollHeight</h3><pre class="prettyprint source lang-js"><code>xslet.window.maxScrollLeft // => horizontal scrollable position of window 
+xslet.window.maxScrollTop // => vertical scrollable position of window
+
+xslet.window.scrollWidth // => width of scrolling area
+xslet.window.scrollHeight // => height of scrolling area</code></pre><p>For the unit of these values, <code>.unitOfSize</code> is used.</p>
 <h3>.addRelayoutListener</h3><pre class="prettyprint source lang-js"><code>xslet.window.addRelayoutListener(function(event) {
   console.log('re-layout window contents! : (' + event.width + ', ' + event.height + ')');
 })</code></pre><p>The listener function is called everytime the browser is resized, but the times of calling are much less than the number of resize events.</p>
@@ -111,8 +121,26 @@ This value is a number and the unit is <code>'px'</code>, but can be set in unit
 <code>'px'</code> or <code>'mm'</code> with a string like <code>'10px'</code> or <code>'2mm'</code>.</p>
 <p><strong>Type:</strong> number</p>
 <h4><u>.scrollbarWidth</u></h4><p>Is the scroll bar width.
-The unit of this value is <code>xslet.window.unitOfSize</code>.
+The unit of this value is by <code>xslet.window.unitOfSize</code>.
 This value is re-calculated when window contents are re-layouted, because some browsers change their scroll bar widths by zooming.</p>
+<p><strong>Type:</strong> number</p>
+<h4><u>.scrollLeft</u></h4><p>Is the horizontal scroll bar position of window.
+The unit of this value is by <code>xslet.window.unitOfSize</code>.</p>
+<p><strong>Type:</strong> number</p>
+<h4><u>.scrollTop</u></h4><p>Is the vertical scroll bar position of window.
+The unit of this value is by <code>xslet.window.unitOfSize</code>.</p>
+<p><strong>Type:</strong> number</p>
+<h4><u>.maxScrollLeft</u></h4><p>is the maximum horizontal scroll bar position of window.
+The unit of this value is by <code>xslet.window.unitOfSize</code>.</p>
+<p><strong>Type:</strong> number </p>
+<h4><u>.maxScrollTop</u></h4><p>is the maximum vertical scroll bar position of window.
+The unit of this value is by <code>xslet.window.unitOfSize</code>.</p>
+<p><strong>Type:</strong> number</p>
+<h4><u>.scrollWidth</u></h4><p>is the width of the scroll area of window.
+The unit of this value is by <code>xslet.window.unitOfSize</code>.</p>
+<p><strong>Type:</strong> number</p>
+<h4><u>.scrollHeight</u></h4><p>is the height of the scroll area of window.
+The unit of this value is by <code>xslet.window.unitOfSize</code>.</p>
 <p><strong>Type:</strong> number</p>
 <h4><u>.relayoutDelay</u></h4><p>Is the delay time of re-layouting against resize events.
 The unit of this value is milli-second.</p>
@@ -198,7 +226,7 @@ See the file LICENSE in this distribution for more details.</p></article>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2016/12/11 22:43:39
+		on 2017/02/06 23:05:56
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

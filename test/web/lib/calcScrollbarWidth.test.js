@@ -3,7 +3,10 @@ var expect = chai.expect;
 describe('calcScrollbarWidth', function() {
 
   it('Should get scroll bar width', function(done) {
-    if (xslet.platform.os.MACOS) {
+    if (xslet.platform.ua.PHANTOMJS) {
+      expect(calcScrollbarWidth(window)).to.equal(16);
+
+    } else if (xslet.platform.os.MACOS) {
       expect(calcScrollbarWidth(window)).to.equal(0);
 
     } else if (xslet.platform.os.WINNT) {

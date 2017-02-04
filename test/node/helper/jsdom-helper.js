@@ -6,7 +6,7 @@ var redefineDocument = require('./document');
 module.exports = function(jsdom) {
   var window = jsdom.defaultView;
   redefineWindow(window);
-  redefineDocument(window.document);
+  redefineDocument(window);
   return window;
 };
 

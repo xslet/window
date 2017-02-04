@@ -203,6 +203,127 @@ function calcScrollbarWidth(window) {
 
 
 /**
+ * Defines properties for scroll position.
+ *
+ * @private
+ * @param nsWindow {object} - The `xslet.window` namespace object.
+ * @param window {Window} - The window object of DOM.
+ */
+function defineScrollPosition(nsWindow, window) {
+  var doc = window.document;
+  var documentElement = doc.documentElement;
+
+  var scroller = doc.body;
+  /* istanbul ignore if */
+  if (xslet.platform.ua.FIREFOX || xslet.platform.ua.MSIE) {
+    scroller = documentElement;
+  }
+
+  Object.defineProperty(nsWindow, 'scrollLeft', {
+    enumerable: true,
+    set: setScrollLeft,
+    get: getScrollLeft,
+  });
+
+  Object.defineProperty(nsWindow, 'scrollTop', {
+    enumerable: true,
+    set: setScrollTop,
+    get: getScrollTop,
+  });
+
+  Object.defineProperty(nsWindow, 'scrollWidth', {
+    enumerable: true,
+    set: readonly,
+    get: getScrollWidth,
+  });
+
+  Object.defineProperty(nsWindow, 'scrollHeight', {
+    enumerable: true,
+    set: readonly,
+    get: getScrollHeight,
+  });
+
+  Object.defineProperty(nsWindow, 'maxScrollLeft', {
+    enumerable: true,
+    set: readonly,
+    get: getMaxScrollLeft,
+  });
+
+  Object.defineProperty(nsWindow, 'maxScrollTop', {
+    enumerable: true,
+    set: readonly,
+    get: getMaxScrollTop,
+  });
+
+
+  function setScrollLeft(v) {
+    if (typeof v !== 'number' || isNaN(v)) {
+      return;
+    }
+    v = nsWindow.convertUnit(v, nsWindow.unitOfSize, 'px');
+    v = Math.max(0, Math.min(v, getMaxScrollLeftInPixel()));
+    scroller.scrollLeft = v;
+  }
+
+  function getScrollLeft() {
+    var v = scroller.scrollLeft || /* istanbul ignore next */ 0;
+    v = Math.max(0, Math.min(v, getMaxScrollLeftInPixel())); /* for Safari */
+    v = nsWindow.convertUnit(v, 'px', nsWindow.unitOfSize);
+    return v;
+  }
+
+  function setScrollTop(v) {
+    if (typeof v !== 'number' || isNaN(v)) {
+      return;
+    }
+    v = nsWindow.convertUnit(v, nsWindow.unitOfSize, 'px');
+    v = Math.max(0, Math.min(v, getMaxScrollTopInPixel()));
+    scroller.scrollTop = v;
+  }
+
+  function getScrollTop() {
+    var v = scroller.scrollTop || /* istanbul ignore next */ 0;
+    v = Math.max(0, Math.min(v, getMaxScrollTopInPixel())); /* for Safari */
+    v = nsWindow.convertUnit(v, 'px', nsWindow.unitOfSize);
+    return v;
+  }
+
+  function getScrollWidth() {
+    var v = scroller.scrollWidth || /* istanbul ignore next */ 0;
+    return nsWindow.convertUnit(v, 'px', nsWindow.unitOfSize);
+  }
+
+  function getScrollHeight() {
+    var v = scroller.scrollHeight || /* istanbul ignore next */ 0;
+    return nsWindow.convertUnit(v, 'px', nsWindow.unitOfSize);
+  }
+
+  function getMaxScrollLeft() {
+    var v = getMaxScrollLeftInPixel();
+    return nsWindow.convertUnit(v, 'px', nsWindow.unitOfSize);
+  }
+
+  function getMaxScrollTop() {
+    var v = getMaxScrollTopInPixel();
+    return nsWindow.convertUnit(v, 'px', nsWindow.unitOfSize);
+  }
+
+
+  function getMaxScrollLeftInPixel() {
+    var v = scroller.scrollWidth - documentElement.clientWidth;
+    return Math.max(0, v || /* istanbul ignore next */ 0);
+  }
+
+  function getMaxScrollTopInPixel() {
+    var v = scroller.scrollHeight - documentElement.clientHeight;
+    return Math.max(0, v || /* istanbul ignore next */ 0);
+  }
+}
+
+function readonly() {}
+
+
+/**
  * Defines some properties and methods for re-layouting window contents.
  *
  * @private
@@ -318,6 +439,7 @@ function defineWindow(xslet, window) {
   defineUnitOfSize(xslet.window);
   defineRootFontSize(xslet.window, window);
   defineConvertUnit(xslet.window, window);
+  defineScrollPosition(xslet.window, window);
   defineRelayout(xslet.window, window);
 
   /**
@@ -333,6 +455,25 @@ function defineWindow(xslet, window) {
    *   The unit of this value is same with `unitOfSize` property.
    *   This value can be updated by re-layouting a page, because some browsers
    *   change its scroll bar width by zooming.
+   *   (read only)
+   * @prop scrollLeft {number} - The horizontal scroll position of window.
+   *   The unit of this value is same with `unitOfSize` property.
+   * @prop scrollTop {number} - The vertical scroll position of window.
+   *   The unit of this value is same with `unitOfSize` property.
+   * @prop maxScrollLeft {number} - The maximum horizontal scroll position of
+   *   window.
+   *   The unit of this value is same with `unitOfSize` property.
+   *   (read only)
+   * @prop maxScrollTop {number} - The maximum vertical scroll position of
+   *   window.
+   *   The unit of this value is same with `unitOfSize` property.
+   *   (read only)
+   * @prop scrollWidth {number} - The width of scrollable area of window.
+   *   The unit of this value is same with `unitOfSize` property.
+   *   (read only)
+   * @prop scrollHeight {number} - The height of scrollable area of window.
+   *   The unit of this value is same with `unitOfSize` property.
+   *   (read only)
    * @prop relayoutDelay {number} - The delay time to re-layout a page against
    *   resize events. The unit of this value is millisecond.
    */

@@ -9,9 +9,10 @@ const jsdoc = require('gulp-jsdoc3')
 const eslint = require('gulp-eslint')
 const plumber = require('gulp-plumber')
 const mocha = require('gulp-spawn-mocha')
+const mochaPhantomJS = require('gulp-mocha-phantomjs')
 
 const path = require('path')
-const EOL = '\n';
+const EOL = '\n'
 
 var filesForWeb = [
   'res/header.forweb',
@@ -19,6 +20,7 @@ var filesForWeb = [
   'src/lib/defineRootFontSize.js',
   'src/lib/defineConvertUnit.js',
   'src/lib/calcScrollbarWidth.js',
+  'src/lib/defineScrollPosition.js',
   'src/lib/defineRelayout.js',
   'src/defineWindow.js',
   'res/footer.forweb',
@@ -33,6 +35,7 @@ var testToolsForWeb = [
 
 var srcfiles = filesForWeb.filter(file => path.extname(file) === '.js')
 var testfiles = ['test/node/**/*.test.js']
+var htmlfiles = ['test/web/**/*.test.html']
 
 var destfile = 'dist/xslet.window.js'
 var minifile = 'dist/xslet.window.min.js'
@@ -112,10 +115,21 @@ fun.coverage = () =>
       .pipe(mocha({ istanbul: true }))
 fun.coverage.description = 'Measures the coverage of the unit tests.'
 
+fun.phantomjs = () =>
+  gulp.src(htmlfiles)
+      .pipe(mochaPhantomJS())
+fun.phantomjs.description = 'Runs the unit tests with PhantomJS.'
+
 fun.watch = {
   watch: [].concat(srcfiles, testfiles),
-  call: [['build', 'test']],
+  call: [['build', 'coverage']],
 }
 fun.watch.description = 'Watches file changes, then builds and tests.'
+
+fun['watch:build'] = {
+  watch: [].concat(srcfiles, testfiles),
+  call: 'build',
+}
+fun['watch:build'].description = 'Watches file changes, then builds.'
 
 fun.default = fun.watch

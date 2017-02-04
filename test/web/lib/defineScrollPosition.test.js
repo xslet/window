@@ -1,17 +1,5 @@
-'use strict';
 
-var jsdom = require('jsdom').jsdom('');
-var window = require('../helper/jsdom-helper')(jsdom);
-var chai = require('chai');
 var expect = chai.expect;
-
-var xslet = {}; require('@xslet/platform')(xslet, window);
-
-var defineUnitOfSize = require('../../../src/lib/defineUnitOfSize');
-var defineRootFontSize = require('../../../src/lib/defineRootFontSize');
-var defineConvertUnit = require('../../../src/lib/defineConvertUnit');
-var defineScrollPosition = require('../../../src/lib/defineScrollPosition');
-
 describe('defineScrollPosition', function() {
 
   var body = window.document.body,

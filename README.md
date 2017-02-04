@@ -60,7 +60,7 @@ Since this property uses `.unitOfSize` as the unit, this value is also determine
 
 Some browsers changes its scroll bar width by zooming (to keep appearance width of its scroll bar). This property solves the change by re-calculating when window contents are re-layouted.
 
-### .scrollLeft & .scrollTop
+### .scrollLeft/.scrollTop
 
 ```js
 xslet.window.scrollLeft = 10
@@ -68,6 +68,18 @@ xslet.window.scrollTop = 100
 
 xslet.window.scrollLeft // => 10
 xslet.window.scrollTop // => 100
+```
+
+For the unit of these values, `.unitOfSize` is used.
+
+### .maxScrollLeft/.maxScrollTop/.scrollWidth/.scrollHeight
+
+```js
+xslet.window.maxScrollLeft // => horizontal scrollable position of window 
+xslet.window.maxScrollTop // => vertical scrollable position of window
+
+xslet.window.scrollWidth // => width of scrolling area
+xslet.window.scrollHeight // => height of scrolling area
 ```
 
 For the unit of these values, `.unitOfSize` is used.
@@ -134,6 +146,32 @@ Is the vertical scroll bar position of window.
 The unit of this value is by `xslet.window.unitOfSize`.
 
 **Type:** number
+
+#### <u>.maxScrollLeft</u>
+
+is the maximum horizontal scroll bar position of window.
+The unit of this value is by `xslet.window.unitOfSize`.
+
+**Type:** number 
+
+#### <u>.maxScrollTop</u>
+
+is the maximum vertical scroll bar position of window.
+The unit of this value is by `xslet.window.unitOfSize`.
+
+**Type:** number
+
+#### <u>.scrollWidth</u>
+
+is the width of the scroll area of window.
+The unit of this value is by `xslet.window.unitOfSize`.
+
+**Type:** number
+
+#### <u>.scrollHeight</u>
+
+is the height of the scroll area of window.
+The unit of this value is by `xslet.window.unitOfSize`.
 
 **Type:** number
 

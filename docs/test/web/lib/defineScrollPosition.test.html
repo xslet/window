@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>xslet.window Test</title>
+ <link  href="../tools/mocha.css" rel="stylesheet"/>
+ <script src="../tools/mocha.js"></script>
+ <script src="../tools/chai.js"></script>
+ <script src="../tools/xslet.platform.min.js"></script>
+</head>
+<body>
+ <div id="mocha"></div>
+ <script>mocha.setup('bdd')</script>
+ <script src="defineUnitOfSize.js"></script>
+ <script src="defineRootFontSize.js"></script>
+ <script src="defineConvertUnit.js"></script>
+ <script src="defineScrollPosition.js"></script>
+ <script src="defineScrollPosition.test.js"></script>
+ <script>
+  mocha.checkLeaks();
+  mocha.run();
+ </script>
+</body>
+</html>

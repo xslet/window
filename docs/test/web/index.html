@@ -6,8 +6,9 @@
  <style>
   html { font: 12px/2.0 "Helvetica Neue", Helvetica, Arial, sans-serif; }
   body { margin: 30px 50px }
-  main { display: flex }
-  main > section:not(:first-of-type) { margin-left: 4rem; }
+  main { position: fixed; }
+  article { display: flex; }
+  article > section:not(:first-of-type) { margin-left: 4rem; }
   div.h1 { font-size: 1.2rem; padding-left: 1.0rem; }
   div.h2 { font-size: 1.0rem; padding-left: 1.5rem; padding-top: 0.5rem; }
   div.body { padding-left: 2.5rem; }
@@ -16,12 +17,14 @@
  </style>
 </head>
 <body>
- <script src="../../dist/xslet.window.min.js"></script>
- <script>
- xslet.window.rootFontSize = 13;
- </script>
+<script src="tools/xslet.platform.min.js"></script>
+<script src="../../dist/xslet.window.min.js"></script>
+<script>
+xslet.window.unixOfSize = 'px';
+</script>
+<main>
 
- <main>
+ <article>
   <section>
    <div class="h1">Properties of <code>xslet.window</code></div>
    <script>
@@ -40,12 +43,74 @@
    text += '</li>';
 
    text += '<li>';
+   text += 'xslet.window.scrollLeft = ';
+   text += '<span id="windowScrollLeft">';
+   text += xslet.window.scrollLeft;
+   text += '</span>';
+   text += '</li>';
+
+   text += '<li>';
+   text += 'xslet.window.scrollTop = ';
+   text += '<span id="windowScrollTop">';
+   text += xslet.window.scrollTop;
+   text += '</span>';
+   text += '</li>';
+
+   text += '<li>';
+   text += 'xslet.window.maxScrollLeft = ';
+   text += '<span id="windowMaxScrollLeft">';
+   text += xslet.window.maxScrollLeft;
+   text += '</span>';
+   text += '</li>';
+
+   text += '<li>';
+   text += 'xslet.window.maxScrollTop = ';
+   text += '<span id="windowMaxScrollTop">';
+   text += xslet.window.maxScrollTop;
+   text += '</span>';
+   text += '</li>';
+
+   text += '<li>';
+   text += 'xslet.window.scrollWidth = ';
+   text += '<span id="windowScrollWidth">';
+   text +=  xslet.window.scrollWidth;
+   text += '</span>';
+   text += '</li>';
+
+   text += '<li>';
+   text += 'xslet.window.scrollHeight = ';
+   text += '<span id="windowScrollHeight">';
+   text += xslet.window.scrollHeight;
+   text += '</span>';
+   text += '</li>';
+
+   text += '<li>';
    text += 'xslet.window.relayoutDelay = ' + xslet.window.relayoutDelay;
    text += '</li>';
 
    text += '</ul>';
 
    document.write(text);
+
+   document.body.style.width = '2000px';
+   document.body.style.height = '2000px';
+   function updateScrollSize(event) {
+     document.getElementById('windowScrollLeft').innerText =
+       xslet.window.scrollLeft;
+     document.getElementById('windowScrollTop').innerText =
+       xslet.window.scrollTop;
+     document.getElementById('windowMaxScrollLeft').innerText =
+       xslet.window.maxScrollLeft;
+     document.getElementById('windowMaxScrollTop').innerText =
+       xslet.window.maxScrollTop;
+     document.getElementById('windowScrollWidth').innerText =
+       xslet.window.scrollWidth;
+     document.getElementById('windowScrollHeight').innerText =
+       xslet.window.scrollHeight;
+   }
+   window.addEventListener('load', updateScrollSize);
+   window.addEventListener('resize', updateScrollSize);
+   window.addEventListener('scroll', updateScrollSize);
    </script>
   </section>
 
@@ -151,7 +216,7 @@
     delBtn.disabled = true;
   }());
   </script>
- </main>
+ </article>
 
  <hr/>
 
@@ -163,6 +228,7 @@
     'defineRelayout',
     'defineRootFontSize',
     'defineUnitOfSize',
+    'defineScrollPosition',
   ];
 
   var text = '';
@@ -176,5 +242,6 @@
   </script>
  </footer>
 
+</main>
 </body>
 </html>
