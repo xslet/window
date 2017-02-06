@@ -242,7 +242,7 @@ See the file LICENSE in this distribution for more details.
 [repo-url]: https://github.com/xslet/window/
 [io-image]: http://img.shields.io/badge/HP-github.io-ffbbbb.svg
 [io-url]: https://xslet.github.io/window/
-[npm-image]: http://img.shields.io/badge/npm-v0.3.0-blue.svg
+[npm-image]: http://img.shields.io/badge/npm-v0.4.0-blue.svg
 [npm-url]: https://www.npmjs.org/package/@xslet/window/
 [mit-image]: http://img.shields.io/badge/license-MIT-green.svg
 [mit-url]: https://opensource.org/licenses/MIT
